@@ -24,6 +24,16 @@ public class Main {
 		toyota.startEngine();
 		renault.shiftGear(-1);
 		toyota.shiftGear(-1);
+		
+		//book's class call
+		//Book(String title,String author,int maxPages, int currentPage)
+		Book pushkin = new Book("Poetica","Pushkin",500,10);
+		Book shekspire = new Book("Gamlet","Shekspire", 300, 20);
+		pushkin.read();
+		pushkin.readPages(400);
+		shekspire.read();
+		shekspire.readPages(152);
+		
 	}
 
 }
