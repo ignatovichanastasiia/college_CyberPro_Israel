@@ -33,11 +33,9 @@ public class Car extends Vehicle implements Detailable{
 	public void setYear(int year) {
 		if(year<1885||year>CurrentYEAR) {
 			System.out.println("The number of year entered is incorrect.");
-			if(getYear()<1885||getYear()>CurrentYEAR) {
-				this.year=CurrentYEAR;
-			}
-			System.out.println("Now year is "+getYear());
 		}
+
+		System.out.println("Now year is "+year);
 	}
 
 	public void playMusic(){
@@ -46,12 +44,12 @@ public class Car extends Vehicle implements Detailable{
 	}
 	
 	public void details() {
-		System.out.println("Car (model=" + getModel() + ", year=" + getYear() + ", brand=" + getBrand() + ")");
+		System.out.println("Car (model=" + model + ", year=" + year + ", brand=" + brand + ")");
 	}
 
 	@Override
 	public String toString() {
-		return "Car [getModel()=" + getModel() + ", getYear()=" + getYear() + ", getBrand()=" + getBrand() + "]";
+		return "Car [getModel()=" + model + ", getYear()=" + year + ", getBrand()=" + brand + "]";
 	}
 	
 	
