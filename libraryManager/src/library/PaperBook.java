@@ -22,9 +22,9 @@ public class PaperBook extends Book{
 	}
 
 
-
+	@Override 
 	void displayDetails() {
-		
+		System.out.println("Paper book number "+getNumber()+" - " + getTitle()+" (shelfLocation: " + getShelfLocation() + ") Author: " + getAuthor().getName() + " is available: " + isAvailable());
 	}
 	
 

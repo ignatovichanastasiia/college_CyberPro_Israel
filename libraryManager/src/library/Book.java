@@ -1,17 +1,39 @@
 package library;
 
 public abstract class Book {
+	private static int counter;
+	private int number;
 	private String title;
 	private Author author;
 	private boolean isAvailable;
+	private String tookBy;
 	
 	
 	public Book(String title, Author author) {
 		this.title = title;
 		this.author = author;
 		this.isAvailable = true;
+		this.number = ++counter;
+		this.author.insertToAuthorsBooks(this);	
 	}
 	
+	public boolean takeBook(String name) {
+		if(!this.isAvailable || name.isBlank()) {
+			return false;
+		}
+		this.isAvailable = false;
+		this.tookBy = name;
+		return true;
+	}
+	
+	public boolean returnBook(String name){
+			if(!this.isAvailable || !this.tookBy.equalsIgnoreCase(name)) {
+				return false;
+			}
+			this.isAvailable = true;
+			this.tookBy = "nobody";
+			return true;
+	}
 	
 	public void setTitle(String title) {
 		this.title = title;
@@ -24,7 +46,6 @@ public abstract class Book {
 	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
-	
 	
 	
 	public String getTitle() {
@@ -40,7 +61,25 @@ public abstract class Book {
 	public boolean isAvailable() {
 		return isAvailable;
 	}
+	
 
+	public int getNumber() {
+		return number;
+	}
+
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+	
+
+	public String getTookBy() {
+		return tookBy;
+	}
+
+	public void setTookBy(String tookBy) {
+		this.tookBy = tookBy;
+	}
 
 	abstract void displayDetails();
 

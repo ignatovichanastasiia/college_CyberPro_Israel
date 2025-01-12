@@ -18,11 +18,10 @@ public class EBook extends Book{
 		this.fileSize = fileSize;
 	}
 
-
+	@Override 
 	void displayDetails() {
-		
+		System.out.println("EBook number "+getNumber()+" - " + getTitle()+" size: " + getFileSize() + " Author: " + getAuthor().getName() + " is available: " + isAvailable());
 	}
-	
 
 }
 
