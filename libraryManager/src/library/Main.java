@@ -216,28 +216,23 @@ public class Main {
 	
 //	DON'T WORK	
 //	private static void addBook() { 
-//	    // Попросим пользователя ввести имя автора
+
 //	    System.out.println("Enter author's name");
-//	    String aName = sc.nextLine();  // Используем nextLine для полного ввода
-//
-//	    // Попросим пользователя ввести название книги
+//	    String aName = sc.nextLine();  
+
 //	    System.out.println("Enter title");
-//	    String title = sc.nextLine();  // Используем nextLine для полного ввода
-//
-//	    // Попросим пользователя ввести биографию автора
+//	    String title = sc.nextLine();  
+
 //	    System.out.println("Enter biography");
-//	    String bio = sc.nextLine();  // Используем nextLine для полного ввода
-//
-//	    // Попросим пользователя ввести размер книги
+//	    String bio = sc.nextLine(); 
+
 //	    System.out.println("Enter size");
 //	    double size = sc.nextDouble();
-//	    sc.nextLine();  // Считываем символ новой строки после nextDouble()
-//
-//	    // Попросим пользователя ввести местоположение книги
+//	    sc.nextLine();  
+
 //	    System.out.println("Enter location");
-//	    String location = sc.nextLine();  // Используем nextLine для полного ввода
-//
-//	    // Добавляем книгу в соответствующий список в зависимости от размера
+//	    String location = sc.nextLine();  
+
 //	    if(size == 0) {
 //	        pbooksList.add(new PaperBook(title, new Author(aName, bio), location));    
 //	        System.out.println("PB - Done!");
