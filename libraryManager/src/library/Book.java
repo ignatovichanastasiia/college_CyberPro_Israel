@@ -27,7 +27,7 @@ public abstract class Book {
 	}
 	
 	public boolean returnBook(String name){
-			if(!this.isAvailable || !this.tookBy.equalsIgnoreCase(name)) {
+			if(this.isAvailable || !this.tookBy.equalsIgnoreCase(name)) {
 				return false;
 			}
 			this.isAvailable = true;
