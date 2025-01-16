@@ -128,11 +128,7 @@ public class Main {
 			case 8:
 				System.out.println("Your choose is 8: you want to add a book to the library.");
 				addBook();
-				break;				
-			case 9:
-				System.out.println("Your choose is 9: you want to delete a book to the library.");
-//				deleteBook();
-				break;				
+				break;							
 			default:
 				
 		}		
@@ -290,32 +286,6 @@ public class Main {
 		    System.out.println("Ebook has been added\n");   
 		}		
 	}
-	
-//NEED Iterator	
-//	private static void deleteBook() {
-//		booksByAuthors();
-//		System.out.println("Enter title of the book you want to delete: ");
-//		clientTitle = sc.next();
-//		ebooksList.forEach(new Consumer<Book>() {
-//			   @Override
-//			   public void accept(Book book) {
-//			       if(clientTitle.equalsIgnoreCase(book.getTitle())) {
-//			    	   ebooksList.remove(book);
-//			    	   System.out.println("The EBook was erased from list.");
-//			       }
-//			   }
-//			});
-//		pbooksList.forEach(new Consumer<Book>() {
-//			   @Override
-//			   public void accept(Book book) {
-//				   if(clientTitle.equalsIgnoreCase(book.getTitle())) {
-//					   pbooksList.remove(book);
-//					   System.out.println("The paper book was erased from list.");
-//			       }
-//			   }
-//			});
-//		
-//	}
 	
 	
 	private static void exit() {
