@@ -56,6 +56,9 @@ public class Main {
 		pbooksList = Arrays.asList(pbooks);
 		ebooksList = Arrays.asList(ebooks);
 		authorsList = Arrays.asList(authors); 
+//		Author r = new Author("ghjk","dfgh");
+//		Book j = new PaperBook("fgh",r,"tyu");
+		pbooksList.add(j);
 		
 		try {
 			enterClientName();
@@ -71,7 +74,8 @@ public class Main {
 					}
 			}while(program != 0);
 		}catch(Exception e) {
-			System.out.println("Something wrong... \n"+e.getMessage());
+//			System.out.println("Something wrong... \n");
+			e.printStackTrace();
 		};
 		exit();
 
@@ -124,8 +128,8 @@ public class Main {
 				returnBookFromMenu('e');
 				break;
 			case 8:
-				System.out.println("Your choose is 8: you want to add a book to the library. But now this program don't work.");
-//				addBook();
+				System.out.println("Your choose is 8: you want to add a book to the library.");
+				addBook();
 				break;				
 			case 9:
 				System.out.println("Your choose is 9: you want to delete a book to the library. But now this program don't work.");
@@ -215,32 +219,37 @@ public class Main {
 	}
 	
 //	DON'T WORK	
-//	private static void addBook() { 
+	private static void addBook() { 
+		sc.nextLine();
+		System.out.println("Let's start entering data for the book.");
+	    System.out.println("Enter author's name");
+	    String aName = sc.nextLine();  
 
-//	    System.out.println("Enter author's name");
-//	    String aName = sc.nextLine();  
+	    System.out.println("Enter title");
+	    String title = sc.nextLine();  
 
-//	    System.out.println("Enter title");
-//	    String title = sc.nextLine();  
+	    System.out.println("Enter biography");
+	    String bio = sc.nextLine(); 
 
-//	    System.out.println("Enter biography");
-//	    String bio = sc.nextLine(); 
+	    System.out.println("Enter size");
+	    String sizeStr = sc.nextLine();
+	    double size = Double.parseDouble(sizeStr.trim());
+	    System.out.println("This is parsed size: "+size);
 
-//	    System.out.println("Enter size");
-//	    double size = sc.nextDouble();
-//	    sc.nextLine();  
+	    System.out.println("Enter location");
+	    String location = sc.nextLine();  
+	    
+	    Author a = new Author(aName,bio);
 
-//	    System.out.println("Enter location");
-//	    String location = sc.nextLine();  
-
-//	    if(size == 0) {
-//	        pbooksList.add(new PaperBook(title, new Author(aName, bio), location));    
-//	        System.out.println("PB - Done!");
-//	    } else {
-//	        ebooksList.add(new EBook(title, new Author(aName, bio), size));
-//	        System.out.println("EB - Done!");
-//	    }
-//	}
+	    if(size == 0) {
+	        Book b = new PaperBook(title, a, location);    
+	        System.out.println("PB - Done!");
+	        
+	    } else {
+	        Book e = new EBook(title, a, size);
+	        System.out.println("EB - Done!");
+	    }
+	}
 	
 	
 //	DON'T WORK	

@@ -1,7 +1,7 @@
 package library;
 
 public abstract class Book {
-	private static int counter;
+	private static int counter=0;
 	private int number;
 	private String title;
 	private Author author;
@@ -15,6 +15,7 @@ public abstract class Book {
 		this.isAvailable = true;
 		this.number = ++counter;
 		this.author.insertToAuthorsBooks(this);	
+		this.tookBy = "";
 	}
 	
 	public boolean takeBook(String name) {
