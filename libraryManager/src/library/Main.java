@@ -249,16 +249,16 @@ public class Main {
 
 	private static void addBook() {
 		//done - for operation with author
-		
+		sc.nextLine();		
 		done = false;
 		System.out.println("Enter title of the book:");
-		clientTitle = sc.next();
+		clientTitle = sc.nextLine();
 		System.out.println("Enter author of the book:");
-		clientAuthorName = sc.next();
+		clientAuthorName = sc.nextLine();
 		System.out.println("Enter file size of the book, if it's exist or enter 0:");
 		clientFileSize = sc.nextDouble();
 		System.out.println("Enter shelfLocation, if it's paper book or enter \"no\":");
-		clientSelflocation = sc.next();
+		clientSelflocation = sc.nextLine();
 		//searching author
 		authorsList.forEach(new Consumer<Author>() {
 		   @Override
@@ -272,7 +272,7 @@ public class Main {
 		//doing author 	   		
 		if(!done){
 			System.out.println("Enter biography: ");
-		    clientAuthorsBiography = sc.next();
+		    clientAuthorsBiography = sc.nextLine();
 		    Author b = new Author(clientAuthorName, clientAuthorsBiography);
 		    authorsList.add(b);
 		    clientAuthor = b;
