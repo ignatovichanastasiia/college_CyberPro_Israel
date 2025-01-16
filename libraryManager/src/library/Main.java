@@ -42,10 +42,10 @@ public class Main {
 	//arrays and array lists
 	private static Book[] pbooks = {b1,b2,b3,b4,b5};
 	private static Book[] ebooks = {b6,b7,b8,b9};
-	private static List<Book> pbooksList = new ArrayList<Book>();
-	private static List<Book> ebooksList = new ArrayList<Book>();
+	private static ArrayList<Book> pbooksList = new ArrayList<Book>();
+	private static ArrayList<Book> ebooksList = new ArrayList<Book>();
 	private static Author[] authors = {nik,mik,samanta,jake,lose};
-	private static List<Author> authorsList = new ArrayList<Author>();
+	private static ArrayList<Author> authorsList = new ArrayList<Author>();
 	
 	//scanner 
 	private static Scanner sc = new Scanner(System.in);
@@ -53,12 +53,10 @@ public class Main {
 
 	public static void main(String[]args) {
 		//doing lists
-		pbooksList = Arrays.asList(pbooks);
-		ebooksList = Arrays.asList(ebooks);
-		authorsList = Arrays.asList(authors); 
-//		Author r = new Author("ghjk","dfgh");
-//		Book j = new PaperBook("fgh",r,"tyu");
-		pbooksList.add(j);
+		pbooksList = new ArrayList(Arrays.asList(pbooks));
+		ebooksList = new ArrayList(Arrays.asList(ebooks));
+		authorsList = new ArrayList(Arrays.asList(authors)); 
+
 		
 		try {
 			enterClientName();
@@ -132,7 +130,7 @@ public class Main {
 				addBook();
 				break;				
 			case 9:
-				System.out.println("Your choose is 9: you want to delete a book to the library. But now this program don't work.");
+				System.out.println("Your choose is 9: you want to delete a book to the library.");
 //				deleteBook();
 				break;				
 			default:
@@ -218,110 +216,82 @@ public class Main {
 		
 	}
 	
-//	DON'T WORK	
-	private static void addBook() { 
-		sc.nextLine();
-		System.out.println("Let's start entering data for the book.");
-	    System.out.println("Enter author's name");
-	    String aName = sc.nextLine();  
+//	simpler method for example and proof dates.
+//	private static void addBook() { 
+//		sc.nextLine();
+//		System.out.println("Let's start entering data for the book.");
+//	    System.out.println("Enter author's name");
+//	    String aName = sc.nextLine();  
+//
+//	    System.out.println("Enter title");
+//	    String title = sc.nextLine();  
+//
+//	    System.out.println("Enter biography");
+//	    String bio = sc.nextLine(); 
+//
+//	    System.out.println("Enter size");
+//	    String sizeStr = sc.nextLine();
+//	    double size = Double.parseDouble(sizeStr.trim());
+//	    System.out.println("This is parsed size: "+size);
+//
+//	    System.out.println("Enter location");
+//	    String location = sc.nextLine();  
+//	    
+//	    Author a = new Author(aName,bio);
+//
+//	    if(size == 0) {
+//	        Book b = new PaperBook(title, a, location);    
+//	        System.out.println("PB - Done!");
+//	        
+//	    } else {
+//	        Book e = new EBook(title, a, size);
+//	        System.out.println("EB - Done!");
+//	    }
+//	}
+	
+	
 
-	    System.out.println("Enter title");
-	    String title = sc.nextLine();  
-
-	    System.out.println("Enter biography");
-	    String bio = sc.nextLine(); 
-
-	    System.out.println("Enter size");
-	    String sizeStr = sc.nextLine();
-	    double size = Double.parseDouble(sizeStr.trim());
-	    System.out.println("This is parsed size: "+size);
-
-	    System.out.println("Enter location");
-	    String location = sc.nextLine();  
-	    
-	    Author a = new Author(aName,bio);
-
-	    if(size == 0) {
-	        Book b = new PaperBook(title, a, location);    
-	        System.out.println("PB - Done!");
-	        
-	    } else {
-	        Book e = new EBook(title, a, size);
-	        System.out.println("EB - Done!");
-	    }
+	private static void addBook() {
+		//done - for operation with author
+		
+		done = false;
+		System.out.println("Enter title of the book:");
+		clientTitle = sc.next();
+		System.out.println("Enter author of the book:");
+		clientAuthorName = sc.next();
+		System.out.println("Enter file size of the book, if it's exist or enter 0:");
+		clientFileSize = sc.nextDouble();
+		System.out.println("Enter shelfLocation, if it's paper book or enter \"no\":");
+		clientSelflocation = sc.next();
+		//searching author
+		authorsList.forEach(new Consumer<Author>() {
+		   @Override
+		   public void accept(Author a) {
+		       if(a.getName().equalsIgnoreCase(clientAuthorName.trim())){
+		    	   clientAuthor = a;
+		    	   done=true;
+		       }
+		   }
+		 });
+		//doing author 	   		
+		if(!done){
+			System.out.println("Enter biography: ");
+		    clientAuthorsBiography = sc.next();
+		    Author b = new Author(clientAuthorName, clientAuthorsBiography);
+		    authorsList.add(b);
+		    clientAuthor = b;
+		  }
+		  
+		if(clientFileSize == 0) {
+		    pbooksList.add(new PaperBook(clientTitle,clientAuthor,clientSelflocation));
+		    System.out.println("Paper book has been added\n");
+		}else{
+			ebooksList.add(new EBook(clientTitle,clientAuthor,clientFileSize));
+		    System.out.println("Ebook has been added\n");   
+		}		
 	}
 	
-	
-//	DON'T WORK	
-//	private static void addBook() {
-//
-//		System.out.println("Enter author's name");
-//		String aName = sc.next();
-//		System.out.println("Enter title");
-//		String title = sc.next();
-//		System.out.println("Enter biography");
-//		String bio = sc.next();
-//		System.out.println("Enter size");
-//		double size = sc.nextDouble();
-//		System.out.println("Enter location");
-//		String location = sc.next();
-//		if(size==0) {
-//			pbooksList.add(new PaperBook(title,new Author(aName,bio),location));	
-//			System.out.println("PB - Done!");
-//		}else {
-//			ebooksList.add(new EBook(title,new Author(aName,bio),size));
-//			System.out.println("EB - Done!");
-//		}
-//		
-//	}
-	
-// DON'T WORK	
-//	private static void addBook() {
-//		//done - for operation with author
-//		
-//		done = false;
-//		System.out.println("Enter title of the book:");
-//		clientTitle = sc.next();
-//		System.out.println("Enter author of the book:");
-//		clientAuthorName = sc.next();
-//		System.out.println("Enter file size of the book, if it's exist or enter 0:");
-//		clientFileSize = sc.nextDouble();
-//		System.out.println("Enter shelfLocation, if it's paper book or enter \"no\":");
-//		clientSelflocation = sc.next();
-//		//searching author
-//		authorsList.forEach(new Consumer<Author>() {
-//		   @Override
-//		   public void accept(Author a) {
-//		       if(a.getName().equalsIgnoreCase(clientAuthorName.trim())){
-//		    	   clientAuthor = a;
-//		    	   done=true;
-//		       }
-//		   }
-//		 });
-//		//doing author 	   		
-//		if(!done){
-//			System.out.println("Enter biography: ");
-//		    clientAuthorsBiography = sc.next();
-//		    Author b = new Author(clientAuthorName, clientAuthorsBiography);
-//		    authorsList.add(b);
-//		    clientAuthor = b;
-//		  }
-//		  
-//		if(clientFileSize == 0) {
-//		    pbooksList.add(new PaperBook(clientTitle,clientAuthor,clientSelflocation));
-//		    System.out.println("Paper book has been added\n");
-//		}else{
-//			ebooksList.add(new EBook(clientTitle,clientAuthor,clientFileSize));
-//		    System.out.println("Ebook has been added\n");   
-//		}		
-//	}
-	
-	
-	
-	
-	
-	
-//	DON'T WORK
+//NEED Iterator	
 //	private static void deleteBook() {
 //		booksByAuthors();
 //		System.out.println("Enter title of the book you want to delete: ");
