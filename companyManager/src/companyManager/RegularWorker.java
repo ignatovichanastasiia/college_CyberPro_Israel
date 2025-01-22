@@ -1,20 +1,30 @@
 package companyManager;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class RegularWorker extends Worker{
-	private final static int START_SICK_DAYS = 15;
+	private static ArrayList<RegularWorker> listRW = new ArrayList<RegularWorker>();
+	final static int START_SICK_DAYS = 15;
 	private int sickDays;
-
+	
+	//constructor
 	public RegularWorker(String name, double basicSalary) {
 		super(name, basicSalary);
 		this.sickDays = START_SICK_DAYS;
+		listRW.add(this);
 	}
 	
+	//count salary per month
 	public double calculatePaycheck() {
 		return super.getBasicSalary()*super.getHours();
 	}
 	
+	//count bonus per month
+	public double calculateBonus(int percent) {
+		return calculatePaycheck()/100*percent;
+	}
+	
+	//take dayoff for worker 
 	public boolean takeSickDays(int days) {
 		if(sickDays-days>=0) {
 			sickDays-=days;
@@ -22,7 +32,15 @@ public class RegularWorker extends Worker{
 		}
 		return false;
 	}
+	
+	//information method
+	@Override
+	void displayInfo() {
+		System.out.println("RegularWorker id: "+getId()+" name: "+getName()+" basic salary: "+getBasicSalary()+" total hours: "
+				+getHours()+" vacation days: "+getVacationDays()+" sick days "+sickDays);	
+	}
 
+	//getters and setters
 	public int getSickDays() {
 		return sickDays;
 	}
@@ -34,12 +52,16 @@ public class RegularWorker extends Worker{
 	public static int getStartSickDays() {
 		return START_SICK_DAYS;
 	}
-	
-	@Override
-	void displayInfo() {
-		System.out.println("RegularWorker id: "+getId()+" name: "+getName()+" basic salary: "+getBasicSalary()+" total hours: "
-				+getHours()+" vacation days: "+getVacationDays()+" sick days "+sickDays);	
+
+	public static ArrayList<RegularWorker> getListRW() {
+		return listRW;
 	}
+
+	public static void setListRW(ArrayList<RegularWorker> listRW) {
+		RegularWorker.listRW = listRW;
+	}
+	
+	
 }
 
 

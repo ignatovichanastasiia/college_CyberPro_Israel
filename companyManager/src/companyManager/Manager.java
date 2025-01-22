@@ -3,49 +3,67 @@ package companyManager;
 import java.util.ArrayList;
 
 public class Manager extends Worker{
-	private final static int EXTRA_VACATION_DAYS = 10;
+	final static int EXTRA_VACATION_DAYS = 10;
+	private static ArrayList<Manager> listManagers;
 	private ArrayList<Worker> team;
 	int vacationDays;
 	
+	//constructor
 	public Manager(String name, double basicSalary) {
 		super(name, basicSalary);
 		this.team = new ArrayList<Worker>();
-		vacationDays = setNewVacationDaysManager();
+		vacationDays = resetVacationDaysManager();
+		listManagers.add(this);
 	}
 
-	public int setNewVacationDaysManager() {
-		return (setNewVacationDaysWorker()+EXTRA_VACATION_DAYS);
-	}
-
+	//salary counter
 	public double calculatePaycheck() {
 		return super.getBasicSalary()*super.getHours();
 	}
 	
+	//bonus counter
+	public double calculateBonus(int percent) {
+		return calculatePaycheck()/100*percent;
+	}
+	
+	//add regular worker in manager's team-list 
 	void addTeamMember(Worker worker) {
 		team.add(worker);
 	}
 	
+	//path of logic for reset all data per month
+	public int resetVacationDaysManager() {
+		return (resetVacationDaysWorker()+EXTRA_VACATION_DAYS);
+	}
+	
+	//info method 
 	void displayTeam() {
 		team.forEach(w -> w.displayInfo());
 	}
-	
-	public ArrayList<Worker> getTeam() {
-		return team;
+
+	//info method
+	@Override
+	void displayInfo() {
+		System.out.println("Manager id: "+getId()+"name: "+ getName()+" basic salary: "+getBasicSalary()
+		+" total hours "+getHours()+" team:\n ");
+		displayTeam();	
 	}
 	
-	public void printTeam() {
-		team.forEach(w -> w.displayInfo());
+	//getter and setter
+	public ArrayList<Worker> getTeam() {
+		return team;
 	}
 
 	public void setTeam(ArrayList<Worker> team) {
 		this.team = team;	
 	}
 
-	@Override
-	void displayInfo() {
-		System.out.println("Manager id: "+getId()+"name: "+ getName()+" basic salary: "+getBasicSalary()
-		+" total hours "+getHours()+" team:\n ");
-		printTeam();	
+	public static ArrayList<Manager> getListManagers() {
+		return listManagers;
+	}
+
+	public static void setListManagers(ArrayList<Manager> listManagers) {
+		Manager.listManagers = listManagers;
 	}
 }
 

@@ -4,20 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Client extends Person{
-	int DAYS_ON_MONTHS = 31;
+	private static ArrayList<Client> listClients = new ArrayList<Client>();
+	final int DAYS_ON_MONTHS = 31;
 	private String companyName;
 	private double[] dailySpending;
 	private final String id;
-	private static ArrayList<Client> clients = new ArrayList<Client>();
-		
+	
+	//constructor	
 	public Client(String name, String companyName) {
 		super(name);
 		this.companyName = companyName;
 		this.dailySpending = new double[DAYS_ON_MONTHS-1];
 		id = "C-"+super.getId();
-		clients.add(this);
+		listClients.add(this);
 	}
 	
+	//all spending hours
 	public double totalSpending() {
 		double total= 0;
 		for(int x=0;x<DAYS_ON_MONTHS;x++){
@@ -25,19 +27,27 @@ public class Client extends Person{
 		}
 		return total;
 	}
-
+	
+	//insert spending ours
 	public void updateDailySpending(int day, double amount) {
 		if(day<=DAYS_ON_MONTHS && day>=1) {
 			dailySpending[day-1] = amount;
 		}
 	}
+	
+	//info method
+	@Override
+	public void displayInfo() {
+		System.out.println("Client id: " + getId()+", name: "+getName()+ ", companyName: " + companyName + ", total spending: "+totalSpending());
+	}
 
+	//getters and setters
 	public static ArrayList<Client> getClients() {
-		return clients;
+		return listClients;
 	}
 
 	public static void setClients(ArrayList<Client> clients) {
-		Client.clients = clients;
+		Client.listClients = clients;
 	}
 
 	public String getCompanyName() {
@@ -55,11 +65,15 @@ public class Client extends Person{
 	public void setDailySpending(double[] dailySpending) {
 		this.dailySpending = dailySpending;
 	}
-	
-	@Override
-	public void displayInfo() {
-		System.out.println("Client id: " + getId()+", name: "+getName()+ ", companyName: " + companyName + ", total spending: "+totalSpending());
+
+	public static ArrayList<Client> getListClients() {
+		return listClients;
 	}
+
+	public static void setListClients(ArrayList<Client> listClients) {
+		Client.listClients = listClients;
+	}
+
 }
 
 

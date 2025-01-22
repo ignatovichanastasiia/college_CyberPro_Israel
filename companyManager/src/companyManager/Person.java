@@ -21,17 +21,18 @@ public abstract class Person {
 	
 	abstract void displayInfo();
 	
+	//logic for restart all days - reset all data per month
 	public static void resetAllDays() {
 		ArrayList<Worker> workers = Worker.getWorkersList();
 		ArrayList<Client> clients = Client.getClients();
 		workers.forEach(w -> {
 			w.setDailyHours(new double[(w.DAYS_ON_MONTHS)-1]);
 			if(w instanceof Manager){
-				w.setVacationDays(((Manager) w).setNewVacationDaysManager());
+				w.setVacationDays(((Manager) w).resetVacationDaysManager());
 			}else if(w instanceof RegularWorker){
 				((RegularWorker) w).setSickDays(RegularWorker.getStartSickDays());
 			}else {
-				w.setVacationDays(w.setNewVacationDaysWorker());
+				w.setVacationDays(w.resetVacationDaysWorker());
 			}
 		});	
 		clients.forEach(c -> {

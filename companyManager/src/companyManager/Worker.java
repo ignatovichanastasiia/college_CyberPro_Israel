@@ -3,29 +3,33 @@ package companyManager;
 import java.util.ArrayList;
 
 public abstract class Worker extends Person {
-	int DAYS_ON_MONTHS = 31;
+	private static ArrayList<Worker> listWorkers;
+	final int DAYS_ON_MONTHS = 31;
 	final int START_VACATION_DAYS = 10;
 	private double[] dailyHours; //30 
 	private int vacationDays;
 	private double basicSalary;
 	private final String id;
-	private static ArrayList<Worker> workersList;
 	
+	//constructor
 	public Worker(String name, double basicSalary) {
 		super(name);
-		this.dailyHours = new double[DAYS_ON_MONTHS = 31-1];
+		this.dailyHours = new double[DAYS_ON_MONTHS-1];
 		this.vacationDays = 0;
 		this.basicSalary = basicSalary;
 		this.id = "W-"+super.getId();
-		workersList.add(this);
+		listWorkers.add(this);
 	}
 	
+	//abstract - count salary
 	public abstract double calculatePaycheck();
 	
+	//add hours for worker
 	public void logHours(int day, double hours) {
 		dailyHours[day-1] = hours;
 	}
 	
+	//take vacations for worker
 	public boolean takeVacationDays(int days) {
 		if(vacationDays-days>=0) {
 			vacationDays-=days;
@@ -33,11 +37,8 @@ public abstract class Worker extends Person {
 		}
 		return false;
 	}
-
-	public double[] getDailyHours() {
-		return dailyHours;
-	}
 	
+	//count hours per a month
 	public double getHours() {
 		double hours = 0;
 		for(int x = 0; x < dailyHours.length; x++) {
@@ -45,7 +46,23 @@ public abstract class Worker extends Person {
 		}
 		return hours;
 	}
-
+	
+	//logic path from reset all dates method(person)
+	public int resetVacationDaysWorker() {
+		return START_VACATION_DAYS;
+	}
+	
+	//info method
+	@Override
+	void displayInfo() {
+		System.out.println("Worker id: "+id+"name: "+ getName()+" basic salary: "+getBasicSalary()
+		+" total hours "+getHours()+" vacationDays:" + vacationDays + " salary: "+calculatePaycheck());
+	}	
+	
+	//getters and setters
+	public double[] getDailyHours() {
+		return dailyHours;
+	}
 	public void setDailyHours(double[] dailyHours) {
 		this.dailyHours = dailyHours;
 	}
@@ -53,7 +70,6 @@ public abstract class Worker extends Person {
 	public int getVacationDays() {
 		return vacationDays;
 	}
-
 	public void setVacationDays(int vacationDays) {
 		this.vacationDays = vacationDays;
 	}
@@ -61,32 +77,22 @@ public abstract class Worker extends Person {
 	public double getBasicSalary() {
 		return basicSalary;
 	}
-
 	public void setBasicSalary(double basicSalary) {
 		this.basicSalary = basicSalary;
-	}
-	
-	public int setNewVacationDaysWorker() {
-		return START_VACATION_DAYS;
-	}
-
-	public static ArrayList<Worker> getWorkersList() {
-		return workersList;
-	}
-
-	public static void setWorkersList(ArrayList<Worker> workersList) {
-		Worker.workersList = workersList;
 	}
 
 	public String getId() {
 		return id;
 	}
+
+	public static ArrayList<Worker> getWorkersList() {
+		return listWorkers;
+	}
+
+	public static void setWorkersList(ArrayList<Worker> workersList) {
+		Worker.listWorkers = workersList;
+	}
 	
-	@Override
-	void displayInfo() {
-		System.out.println("Worker id: "+id+"name: "+ getName()+" basic salary: "+getBasicSalary()
-		+" total hours "+getHours()+" vacationDays:" + vacationDays + " salary: "+calculatePaycheck());
-	}	
 }
 
 //
