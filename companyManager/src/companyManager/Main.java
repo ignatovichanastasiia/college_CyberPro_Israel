@@ -31,7 +31,7 @@ public class Main {
 	
 	public static void menuPrinter(int num) {
 		switch(num) {
-		case 0:
+		case 1:
 			System.out.println("Menu\n1 - Regular workers\n2 - Managers\n3 - Clients\n4 - Work process(need a day)\n5 - Counting\n0 - exit");
 			break;
 		case 10:
@@ -51,22 +51,24 @@ public class Main {
 			System.out.println("Counting:\n1 - count salary for all workersn\n2 - count salary for worker\n0 - back");
 			break;
 		default:
-			menuPrinter(0);
+			menuPrinter(1);
 			break;
 		}
 	}
 	
 	public static void menu() {
 		int program1step = 1;
-		while(program1step!=0) {
+		do {
 			try {
-				menuPrinter(0);
+				menuPrinter(1);
 				String clientString = sc.nextLine();
 				program1step = 10*Integer.parseInt(clientString.trim());
-				menuPrinter(program1step);				
-				clientString = sc.nextLine();
-				int program2step = program1step+Integer.parseInt(clientString.trim());
-				goProgram(program2step);
+				if(program1step!=0) {
+					menuPrinter(program1step);				
+					clientString = sc.nextLine();
+					int program2step = program1step+Integer.parseInt(clientString.trim());
+					goProgram(program2step);
+				}
 			}catch(ClassCastException e) {
 				e.printStackTrace();
 				menu();
@@ -76,7 +78,7 @@ public class Main {
 				exit();
 				break;
 			}
-		}
+		}while(program1step!=0);
 		exit();
 	}	
 	
