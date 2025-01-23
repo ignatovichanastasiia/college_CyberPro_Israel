@@ -3,7 +3,7 @@ package companyManager;
 import java.util.ArrayList;
 
 public abstract class Worker extends Person {
-	private static ArrayList<Worker> listWorkers;
+	private static ArrayList<Worker> listWorkers = new ArrayList<Worker>();
 	final int DAYS_ON_MONTHS = 31;
 	final int START_VACATION_DAYS = 10;
 	private double[] dailyHours; //30 

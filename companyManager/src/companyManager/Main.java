@@ -32,23 +32,23 @@ public class Main {
 	public static void menuPrinter(int num) {
 		switch(num) {
 		case 0:
-			System.out.println("Menu/n1 - Regular workers/n2 - Managers/n3 - Clients/n4 - Work process(need a day)/n5 - Counting/n0 - exit");
+			System.out.println("Menu\n1 - Regular workers\n2 - Managers\n3 - Clients\n4 - Work process(need a day)\n5 - Counting\n0 - exit");
 			break;
 		case 10:
-			System.out.println("Regular workers:/n1 - All/n2 - Add/n3 - Delete/n0 - back");
+			System.out.println("Regular workers:\n1 - All\n2 - Add\n3 - Delete\n0 - back");
 			break;
 		case 20:
-			System.out.println("Managers:/n1 - All/n2 - Add/n3 - Delete/n4 - add member of manager's group/n0 - back");
+			System.out.println("Managers:\n1 - All\n2 - Add\n3 - Delete\n4 - add member of manager's group\n0 - back");
 			break;
 		case 30:
-			System.out.println("Clients:/n1 - All/n2 - Add/n3 - Delete/n0 - back");
+			System.out.println("Clients:\n1 - All\n2 - Add\n3 - Delete\n0 - back");
 			break;
 		case 40:
-			System.out.println("Work process(hours):/n1 - add hours for all workers/n2 - add hours for worker/n3 - add hours for all clients/n"
-					+ "4 - add hours for client/0 - back");
+			System.out.println("Work process(hours):\n1 - add hours for all workers\n2 - add hours for worker\n3 - add hours for all clients\n"
+					+ "4 - add hours for client\0 - back");
 			break;
 		case 50:
-			System.out.println("Counting:/n1 - count salary for all workers/n2 - count salary for worker/n0 - back");
+			System.out.println("Counting:\n1 - count salary for all workersn\n2 - count salary for worker\n0 - back");
 			break;
 		default:
 			menuPrinter(0);
@@ -58,7 +58,7 @@ public class Main {
 	
 	public static void menu() {
 		int program1step = 1;
-		while(program1step==0) {
+		while(program1step!=0) {
 			try {
 				menuPrinter(0);
 				String clientString = sc.nextLine();
@@ -70,9 +70,11 @@ public class Main {
 			}catch(ClassCastException e) {
 				e.printStackTrace();
 				menu();
+				break;
 			}catch(Exception e) {
 				e.printStackTrace();
 				exit();
+				break;
 			}
 		}
 		exit();
@@ -84,7 +86,7 @@ public class Main {
 			RegularWorker.getListRW().forEach(w -> w.displayInfo());
 			break;
 		case 12:
-			System.out.println("Let's do regular worker data./n Enter worker's name: ");
+			System.out.println("Let's do regular worker data.\n Enter worker's name: ");
 			String name = sc.nextLine().trim();
 			System.out.println("Enter base salary: ");
 			double salary = parseDouble(sc.nextLine(),12);
@@ -94,7 +96,7 @@ public class Main {
 			}
 			break;
 		case 13:
-			System.out.println("Let's delete a regular worker./n Enter worker's name: ");
+			System.out.println("Let's delete a regular worker.\n Enter worker's name: ");
 			name = sc.nextLine().trim();
 			b = false;
 			RegularWorker.getListRW().forEach(w -> 
@@ -116,7 +118,7 @@ public class Main {
 			Manager.getListManagers().forEach(m -> m.displayInfo());
 			break;
 		case 22:
-			System.out.println("Let's do manager data./n Enter manager's name: ");
+			System.out.println("Let's do manager data.\n Enter manager's name: ");
 			name = sc.nextLine().trim();
 			System.out.println("Enter base salary: ");
 			salary = parseDouble(sc.nextLine(),22);
@@ -126,7 +128,7 @@ public class Main {
 			}
 			break;
 		case 23:
-			System.out.println("Let's delete a manager./n Enter manager's name: ");
+			System.out.println("Let's delete a manager.\n Enter manager's name: ");
 			name = sc.nextLine().trim();
 			b = false;
 			Manager.getListManagers().forEach(m -> 
@@ -143,7 +145,7 @@ public class Main {
 			break;
 		case 24:
 			b = false;
-			System.out.println("Let's add regular worker to a manager's team./nEnter worker's name: ");
+			System.out.println("Let's add regular worker to a manager's team.\nEnter worker's name: ");
 			String wName = sc.nextLine().trim();
 			RegularWorker.getListRW().forEach(w -> 
 			{
@@ -172,7 +174,7 @@ public class Main {
 			Client.getListClients().forEach(c -> c.displayInfo());
 			break;
 		case 32:
-			System.out.println("Let's do client's data./n Enter client's name: ");
+			System.out.println("Let's do client's data.\n Enter client's name: ");
 			name = sc.nextLine().trim();
 			System.out.println("Enter company name: ");
 			clientString = sc.nextLine();
@@ -182,7 +184,7 @@ public class Main {
 			}
 			break;
 		case 33:
-			System.out.println("Let's delete a client./n Enter clients's name: ");
+			System.out.println("Let's delete a client.\n Enter clients's name: ");
 			name = sc.nextLine().trim();
 			b = false;
 			Client.getListClients().forEach(c -> 
@@ -262,7 +264,7 @@ public class Main {
 			Worker.getWorkersList().forEach(w -> {
 				w.displayInfo();
 				double sal = w.calculatePaycheck();
-				System.out.println(w.getName()+"'s salary: "+sal+" /n");
+				System.out.println(w.getName()+"'s salary: "+sal+" \n");
 				total+=sal;
 			});
 			break;
@@ -273,7 +275,7 @@ public class Main {
 				if(w.getName().equalsIgnoreCase(clientString)) {
 					w.displayInfo();
 					double sal = w.calculatePaycheck();
-					System.out.println(w.getName()+"'s salary: "+sal+" /n");
+					System.out.println(w.getName()+"'s salary: "+sal+" \n");
 					total+=sal;
 				}
 			});

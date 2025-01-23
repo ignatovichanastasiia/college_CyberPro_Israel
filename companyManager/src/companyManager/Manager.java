@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Manager extends Worker{
 	final static int EXTRA_VACATION_DAYS = 10;
-	private static ArrayList<Manager> listManagers;
+	private static ArrayList<Manager> listManagers = new ArrayList<Manager>();
 	private ArrayList<Worker> team;
 	int vacationDays;
 	
