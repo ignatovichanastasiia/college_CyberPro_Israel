@@ -11,7 +11,6 @@ public class Main {
 	private static double total;
 	private static RegularWorker defWorker = new RegularWorker("J",10);
 	private static Manager defManager = new Manager("J",10);
-	private static Client defClient = new Client("J","J");
 	private static RegularWorker rw1 = new RegularWorker("J",34.6);
 	private static RegularWorker rw2 = new RegularWorker("K",39);
 	private static RegularWorker rw3 = new RegularWorker("L",34);
@@ -101,15 +100,8 @@ public class Main {
 			System.out.println("Let's delete a regular worker.\n Enter worker's name: ");
 			name = sc.nextLine().trim();
 			b = false;
-			RegularWorker.getListRW().forEach(w -> 
-				{
-				if(w.getName().equalsIgnoreCase(name)){
-					defWorker = w;
-					b = true;
-				}
-			});
+			b = RegularWorker.getListRW().removeIf(person -> person.getName().equals(name));
 			if(b) {
-				RegularWorker.getListRW().remove(defWorker);
 				System.out.println("Done!");
 			}
 			break;
@@ -133,15 +125,8 @@ public class Main {
 			System.out.println("Let's delete a manager.\n Enter manager's name: ");
 			name = sc.nextLine().trim();
 			b = false;
-			Manager.getListManagers().forEach(m -> 
-				{
-				if(m.getName().equalsIgnoreCase(name)){
-					defManager = m;
-					b = true;
-				}
-			});
+			b = Manager.getListManagers().removeIf(person -> person.getName().equals(name));
 			if(b) {
-				Manager.getListManagers().remove(defManager);
 				System.out.println("Done!");
 			}
 			break;
@@ -189,15 +174,8 @@ public class Main {
 			System.out.println("Let's delete a client.\n Enter clients's name: ");
 			name = sc.nextLine().trim();
 			b = false;
-			Client.getListClients().forEach(c -> 
-				{
-				if(c.getName().equalsIgnoreCase(name)){
-					defClient = c;
-					b = true;
-				}
-			});
+			b = Client.getListClients().removeIf(person -> person.getName().equals(name));
 			if(b) {
-				Client.getListClients().remove(defClient);
 				System.out.println("Done!");
 			}
 			break;
@@ -315,7 +293,6 @@ public class Main {
 		Manager.getListManagers().remove(defManager);
 		Worker.getWorkersList().remove(defWorker);
 		Manager.getWorkersList().remove(defManager);
-		Client.getListClients().remove(defClient);
 	}
 	
 	public static void exit() {
