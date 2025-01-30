@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class RegularWorker extends Worker{
 	private static ArrayList<RegularWorker> listRW = new ArrayList<RegularWorker>();
-	final static int START_SICK_DAYS = 15;
+	private final static int START_SICK_DAYS = 15;
 	private int sickDays;
 	
 	//constructor

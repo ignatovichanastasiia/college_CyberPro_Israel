@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class Client extends Person{
 	private static ArrayList<Client> listClients = new ArrayList<Client>();
-	final int DAYS_ON_MONTHS = 31;
+	private final int DAYS_ON_MONTHS = 31;
 	private String companyName;
 	private double[] dailySpending;
 	private final String id;

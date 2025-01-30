@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public abstract class Worker extends Person {
 	private static ArrayList<Worker> listWorkers = new ArrayList<Worker>();
-	final int DAYS_ON_MONTHS = 31;
-	final int START_VACATION_DAYS = 10;
+	private final int DAYS_ON_MONTHS = 31;
+	private final int START_VACATION_DAYS = 10;
 	private double[] dailyHours; //30 
 	private int vacationDays;
 	private double basicSalary;
