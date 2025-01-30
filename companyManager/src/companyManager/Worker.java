@@ -63,6 +63,10 @@ public abstract class Worker extends Person {
 	public double[] getDailyHours() {
 		return dailyHours;
 	}
+	public int getDAYS_ON_MONTHS() {
+		return DAYS_ON_MONTHS;
+	}
+
 	public void setDailyHours(double[] dailyHours) {
 		this.dailyHours = dailyHours;
 	}

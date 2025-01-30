@@ -26,7 +26,7 @@ public abstract class Person {
 		ArrayList<Worker> workers = Worker.getWorkersList();
 		ArrayList<Client> clients = Client.getClients();
 		workers.forEach(w -> {
-			w.setDailyHours(new double[(w.DAYS_ON_MONTHS)-1]);
+			w.setDailyHours(new double[(w.getDAYS_ON_MONTHS())-1]);
 			if(w instanceof Manager){
 				w.setVacationDays(((Manager) w).resetVacationDaysManager());
 			}else if(w instanceof RegularWorker){
@@ -36,7 +36,7 @@ public abstract class Person {
 			}
 		});	
 		clients.forEach(c -> {
-			c.setDailySpending(new double[(c.DAYS_ON_MONTHS)-1]);
+			c.setDailySpending(new double[(c.getDAYS_ON_MONTHS())-1]);
 		});
 		
 	}

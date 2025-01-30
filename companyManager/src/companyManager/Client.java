@@ -46,6 +46,10 @@ public class Client extends Person{
 		return listClients;
 	}
 
+	public int getDAYS_ON_MONTHS() {
+		return DAYS_ON_MONTHS;
+	}
+
 	public static void setClients(ArrayList<Client> clients) {
 		Client.listClients = clients;
 	}
