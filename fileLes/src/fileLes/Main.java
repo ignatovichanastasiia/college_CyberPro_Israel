@@ -84,35 +84,37 @@ public class Main {
 
 	// Create a new file in an existing journal
 	private static void createNewFileInJournal() {
+		//Проверяет есть ли какие-нибудь папки в единой рабочей папке Жорнал
 		File[] journals = journalRootDir.listFiles(File::isDirectory);
 		if (journals == null || journals.length == 0) {
 			System.out.println("No journals available. Please create one first.");
 			return;
 		}
-
+		//выводим все журналы
 		System.out.println("Available journals:");
 		for (int i = 0; i < journals.length; i++) {
 			System.out.println((i + 1) + ". " + journals[i].getName());
 		}
-
+		//выбираем нужный
 		System.out.print("Select a journal: ");
 		int journalIndex = scanner.nextInt() - 1;
 		scanner.nextLine(); // Consume the newline character
-
+		//проверка
 		if (journalIndex < 0 || journalIndex >= journals.length) {
 			System.out.println("Invalid journal selection.");
 			return;
 		}
-
+		// выбираем имя файлу, создаем
 		File selectedJournal = journals[journalIndex];
 		System.out.print("Enter the name of the new file: ");
 		String fileName = scanner.nextLine();
 		File newFile = new File(selectedJournal, fileName);
-
+		// проверка существования
 		if (newFile.exists()) {
 			System.out.println("File already exists.");
 		} else {
 			try {
+				//создаем
 				newFile.createNewFile();
 				System.out.println("File '" + fileName + "' created successfully.");
 			} catch (IOException e) {
@@ -123,6 +125,7 @@ public class Main {
 
 	// Edit an existing file (append)
 	private static void editExistingFile() {
+		//перебор директорий
 		File[] journals = journalRootDir.listFiles(File::isDirectory);
 		if (journals == null || journals.length == 0) {
 			System.out.println("No journals available.");
@@ -142,7 +145,7 @@ public class Main {
 			System.out.println("Invalid journal selection.");
 			return;
 		}
-
+		//выбираем директорию, перебираем файлы
 		File selectedJournal = journals[journalIndex];
 		File[] files = selectedJournal.listFiles(File::isFile);
 
@@ -150,25 +153,25 @@ public class Main {
 			System.out.println("No files in this journal.");
 			return;
 		}
-
+		//перебор файлов
 		System.out.println("Available files:");
 		for (int i = 0; i < files.length; i++) {
 			System.out.println((i + 1) + ". " + files[i].getName());
 		}
-
+		//выбор файла 
 		System.out.print("Select a file to edit: ");
 		int fileIndex = scanner.nextInt() - 1;
 		scanner.nextLine(); // Consume the newline character
-
+		//проверка ввода
 		if (fileIndex < 0 || fileIndex >= files.length) {
 			System.out.println("Invalid file selection.");
 			return;
 		}
-
+		//добавляем информацию в файл!!!
 		File selectedFile = files[fileIndex];
 		System.out.print("Enter the text you want to add: ");
 		String newText = scanner.nextLine();
-
+		//true в аргументе - дозапись
 		try (FileWriter writer = new FileWriter(selectedFile, true)) {
 			writer.write(newText + "\n");
 			System.out.println("Text added successfully.");
@@ -336,7 +339,8 @@ public class Main {
 			System.out.println("Invalid file selection.");
 			return;
 		}
-
+		//Serialization!!! STR
+		//Нельзя сериализовать Файл - нет интерфейса, можно стрингу
 		File selectedFile = files[fileIndex];
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(selectedFile.getName() + ".ser"))) {
 			out.writeObject(new String(Files.readAllBytes(selectedFile.toPath())));
