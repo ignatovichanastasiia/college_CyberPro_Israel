@@ -1,65 +1,64 @@
-package collegeManager;
+package collegeManager_TODO;
 
 public class GradingSystem {
-	
-	private List<Student> students;
-	private List<Course> courses;
-	private List<Grade> grades;
+//	
+//	private List<Student> students;
+//	private List<Course> courses;
+//	private List<Grade> grades;
 	
 //	Student Management:
-	
-	public boolean addStudent(Student student) {
-		
-	}
-	
-	public boolean removeStudent(String studentId) {
-		
-	}
-	
-	public Student getStudentById(String studentId) {
-		
-	}
-	
-//	Course Management: 
-	
-	public boolean addCourse(Course course) {
-		
-	}
-	
-	public boolean removeCourse(String courseId) {
-		
-	}
-	
-	public Course getCourseById(String courseId) {
-		
-	}
-	
-//	Enrollment Management: 
-	
-	public boolean enrollStudentInCourse(String studentId, String courseId) {
-		
-	}
-	
-//	Grade Management: 
-	
-	public boolean addGrade(String studentId, String courseId, double gradeValue) {
-		
-	}
-	
-//	File Operations:
-	
-	public void  saveData(String filename) {
-		
-	}
-	
-	public void loadData(String filename) {
-		
-	}
-	
-	
-	
+//	
+//	public boolean addStudent(Student student) {
+//		
+//	}
+//	
+//	public boolean removeStudent(String studentId) {
+//		
+//	}
+//	
+//	public Student getStudentById(String studentId) {
+//		
+//	}
+//	
+////	Course Management: 
+//	
+//	public boolean addCourse(Course course) {
+//		
+//	}
+//	
+//	public boolean removeCourse(String courseId) {
+//		
+//	}
+//	
+//	public Course getCourseById(String courseId) {
+//		
+//	}
+//	
+////	Enrollment Management: 
+//	
+//	public boolean enrollStudentInCourse(String studentId, String courseId) {
+//		
+//	}
+//	
+////	Grade Management: 
+//	
+//	public boolean addGrade(String studentId, String courseId, double gradeValue) {
+//		
+//	}
+//	
+////	File Operations:
+//	
+//	public void  saveData(String filename) {
+//		
+//	}
+//	
+//	public void loadData(String filename) {
+//		
+//	}
+//	
+//	
+//	
 }
-
 
 
 //Purpose: Manages the overall system, including students, courses, and 
