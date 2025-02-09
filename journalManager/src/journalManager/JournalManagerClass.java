@@ -22,6 +22,10 @@ public class JournalManagerClass {
 	public static String getPathRootDirectory() {
 		return rootDirectory.getPath();
 	}
+	
+	public static File getRootDirectoryFile() {
+		return rootDirectory;
+	}
 
 	// Start directory
 	public static void startRootDirectory() {
