@@ -96,6 +96,5 @@ public class Main {
 			JournalManagerClass.printJournal(journalName);
 			journalName = sc.nextLine().trim();
 		}
-
 	}
 }
