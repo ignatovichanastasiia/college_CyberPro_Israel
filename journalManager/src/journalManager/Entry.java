@@ -10,6 +10,7 @@ class Entry implements Serializable {
 	public Entry(String entryName, String content) {
 		this.entryName = entryName;
 		this.content = content;
+		System.out.println("Entry "+entryName+" created");
 	}
 
 

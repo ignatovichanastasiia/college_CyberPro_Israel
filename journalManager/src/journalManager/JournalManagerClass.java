@@ -6,42 +6,31 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class JournalManagerClass {
 
 	/*
-	 * The program without an interface for working with files and folders. 
-	 * Files are represented by serialized Entry classes, folders can be serialized by 
-	 * specifying the path to the save location, and then the folder structure can be restored.
+	 * The program without an interface for working with files and folders. Files
+	 * are represented by serialized Entry classes, folders can be serialized by
+	 * specifying the path to the save location, and then the folder structure can
+	 * be restored.
 	 * 
 	 */
 
-	private static File rootDirectory; // directory - for start working in
+	private static File rootDirectory = new File("journals"); // directory - for start working in
 
 	public static String getPathRootDirectory() {
 		return rootDirectory.getPath();
 	}
-	
-	public static File getRootDirectoryFile() {
-		return rootDirectory;
-	}
 
-	// Start directory
-	public static void startRootDirectory() {
-		File rootFile = new File("journals");
-		if (!rootFile.exists()) {
-			rootFile.mkdir();
-		}
-		JournalManagerClass.rootDirectory = rootFile;
-	}
-
-	// Create a new journal folder
+	/*
+	 * (Create a new journal folder - ОК) The method takes the directory name as an
+	 * argument, creates this directory in the parent folder.
+	 */
 	public static void createJournal(String journalName) {
-		// proof of root exists
-		if (!rootDirectory.exists()) {
-			startRootDirectory();
-		}
 		File journal = new File(rootDirectory, journalName);
 		// proof of user's is not exists
 		if (journal.exists()) {
@@ -52,12 +41,11 @@ public class JournalManagerClass {
 		}
 	}
 
-	// Delete an existing file
+	/*
+	 * (Delete an existing file - ОК) The method takes the directory name as an
+	 * argument, collects all files into a list, and deletes the specified one.
+	 */
 	public static void deleteJournal(String journalName) {
-		if (!rootDirectory.exists()) {
-			System.out.println("No journals available.");
-			return;
-		}
 		File[] journals = rootDirectory.listFiles(File::isDirectory);
 		if (journals == null || journals.length == 0) {
 			System.out.println("No journals available.");
@@ -73,31 +61,40 @@ public class JournalManagerClass {
 		}
 	}
 
-	//create entry-serial-file
+	/*
+	 * (create entry-ser-file - OK) The method takes the data for creating an
+	 * `Entry` class object and the folder name where the serialized object should
+	 * be placed. The method creates the user's folder if it doesn't exist in the
+	 * parent folder, creates an object for serialization, and serializes it into
+	 * the folder.
+	 * 
+	 */
 	public static void createEntry(String journalName, String entryName, String content) {
-		if (!rootDirectory.exists()) {
-			startRootDirectory();
-		}
-		File userJournal = new File("" + rootDirectory + "/" + journalName);
-		File newUserFile = new File("" + rootDirectory + "/" + journalName + "/" + entryName + ".ser");
+		File userJournal = new File(rootDirectory, journalName);
+		File newUserFile = new File(userJournal, entryName + ".ser");
 		// create user's entry
 		Entry entry = new Entry(entryName, content);
 		// user's directory
 		try {
 			if (!userJournal.exists()) {
 				createJournal(journalName);
-				System.out.println("Created journal with name " + journalName);
 			}
-			newUserFile.createNewFile();
-			System.out.println("Created new fail for serialization " + newUserFile.getName());
+			if (!newUserFile.exists()) {
+				boolean created = newUserFile.createNewFile();
+				if (created) {
+					System.out.println("Created new file for serialization: " + newUserFile.getName());
+				} else {
+					System.out.println("File already exists: " + newUserFile.getName());
+				}
+			}
 		} catch (IOException e) {
-			System.out.println("We have some problem with creating fales: " + e.getMessage());
+			System.out.println("We have some problem with creating files: " + e.getMessage());
 			return;
 		}
 		// serialization user's file
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(newUserFile.getPath()))) {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(newUserFile))) {
 			out.writeObject(entry);
-			System.out.println("Object was serialization on file " + newUserFile.getPath());
+			System.out.println("Object was serialized into file: " + newUserFile.getPath());
 		} catch (IOException e) {
 			System.out.println("We have a problem with serialization: " + e.getMessage());
 			return;
@@ -105,9 +102,13 @@ public class JournalManagerClass {
 		System.out.println("All done!");
 	}
 
-	//delete serializated file
+	/*
+	 * (delete ser-file - OK) The method takes the file and folder names as
+	 * arguments, finds the specified file in the specified folder, and deletes the
+	 * file using methods from the `File` class.
+	 */
 	public static void deleteEntry(String journalName, String entryName) {
-		File userFile = new File(journalName + "/" + entryName + ".ser");
+		File userFile = new File("" + rootDirectory.getPath() + "/" + journalName + "/" + entryName + ".ser");
 		if (userFile.exists()) {
 			if (userFile.delete()) {
 				System.out.println("File " + userFile.getName() + " deleted");
@@ -120,64 +121,132 @@ public class JournalManagerClass {
 
 	}
 
-	//print deserializated file
+	/*
+	 * (take all files on map - OK) The method collects all folders and their files
+	 * into a `Map`, with the folder names (non-absolute path) as keys, and the list
+	 * of files as values.
+	 */
+	public static Map<String, String[]> collectFiles() {
+		Map<String, String[]> fileMap = new HashMap<>();
+		if (rootDirectory.exists()) {
+			File[] subDirs = rootDirectory.listFiles();
+			if (subDirs != null) {
+				for (File subDir : subDirs) {
+					if (subDir.isDirectory()) {
+						String[] files = subDir.list((dir, name) -> new File(dir, name).isFile());
+						fileMap.put(subDir.getPath(), files);
+					}
+				}
+			}
+		}
+		return fileMap;
+	}
+
+	/*
+	 * (print deserializes file - OK) The method takes the folder name containing
+	 * the file and the file name as arguments, then deserializes the required Entry
+	 * object and prints it using the toString utility method.
+	 */
 	public static void printEntry(String journalName, String entryName) {
-		File userFile = new File(journalName + "/" + entryName + ".ser");
+		File userDir = new File(rootDirectory, journalName);
+		File userFile = new File(userDir, entryName + ".ser");
 		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(userFile.getPath()))) {
 			Entry deserializedEntry = (Entry) in.readObject();
-			System.out.println("Entry was serialized: " + deserializedEntry.getEntryName());
+			System.out.println("Entry was deserialized: " + deserializedEntry.getEntryName());
 			System.out.println(deserializedEntry.toString());
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.println("We have troble with serialization: " + e.getMessage());
+			System.out.println("We have troble with deserialization: " + e.getMessage());
 		}
 	}
 
-	//print structure from users file
+	/*
+	 * (print structure from users dir - OK) The method takes the folder name as an
+	 * argument to print the folder and the names of the contained files.
+	 */
 	public static void printJournal(String journalName) {
 		if (!rootDirectory.exists()) {
 			System.out.println("No journals available.");
 			return;
 		}
-		File userJournal = new File(journalName);
-		if (userJournal.exists()) {
-			File[] files = userJournal.listFiles();
-			System.out.println("Journal " + userJournal.getName());
-			if (files == null || files.length == 0) {
-				System.out.println("No journals and files inside of " + userJournal.getName() + " is available");
-				return;
-			}
-			System.out.println("Inside: ");
-			for (int x = 0; x < files.length; x++) {
-				if (files[x].isFile()) {
-					System.out.println("File: " + files[x].getName() + "/n");
-				} else {
-					System.out.println("Directory: " + files[x].getName() + "/n");
+		Map<String, String[]> fileMap = new HashMap<>(collectFiles());
+		for (Map.Entry<String, String[]> entry : fileMap.entrySet()) {
+			if (entry.getKey().contains(journalName)) {
+				System.out.println("Directory: " + entry.getKey());
+				for (String file : entry.getValue()) {
+					System.out.println("  File: " + file);
 				}
 			}
 		}
 	}
 
-	//save String-journalinfo-file to user's directory by filePath
-	public static void saveJournalAsBytes(String journalName, String filePath) {
-		File userDirectory = new File(filePath);
-		if (!userDirectory.exists()) {
-			createJournal(journalName);
-		}
-		File userJournalForSerialization = new File(journalName);
-		String fileForSerialization = "";
-		if (userJournalForSerialization.exists()) {
-			fileForSerialization = journalToString(userJournalForSerialization);
-		} else {
-			System.out.println("Journal is not exists.");
+	/*
+	 * The method uses the Map from the collectFiles method to print the names of
+	 * all existing files and folders. OK
+	 */
+	public static void printAllJournal() {
+		if (!rootDirectory.exists()) {
+			System.out.println("No journals available.");
 			return;
 		}
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath+"/"+journalName+".ser"))) {
-			if (!fileForSerialization.isBlank()) {
-				out.writeObject(fileForSerialization);
-				System.out.println("Object was serialization on file " + filePath);
-			} else {
-				System.out.println("File for serialization is empty");
+		Map<String, String[]> fileMap = new HashMap<>(collectFiles());
+		for (Map.Entry<String, String[]> entry : fileMap.entrySet()) {
+			System.out.println("Directory: " + entry.getKey());
+			for (String file : entry.getValue()) {
+				System.out.println("  File: " + file);
 			}
+		}
+	}
+
+	/*
+	 * The method delete all files in parent directory - TODO
+	 */
+	public static void deleteAllJournals() {
+		if (!rootDirectory.exists()) {
+			System.out.println("No journals available.");
+			return;
+		}
+		Map<String, String[]> fileMap = new HashMap<>(collectFiles());
+		for (Map.Entry<String, String[]> entry : fileMap.entrySet()) {
+			for (String file : entry.getValue()) {
+				System.out.println("File: " + file + " - deleting...");
+				File deleteFail = new File(file);
+				deleteFail.delete();
+			}
+		}
+		for (Map.Entry<String, String[]> entry : fileMap.entrySet()) {
+			System.out.println("Directory: " + entry.getKey() + " - deleting...");
+			File deleteDir = new File(entry.getKey());
+			deleteDir.delete();
+		}
+	}
+
+	/*
+	 * save Map-journalinfo-file to user's directory by filePath
+	 */
+	public static void saveJournalAsBytes(String journalName, String filePath) {
+		File userJournalForSerialization = new File(rootDirectory, journalName + ".ser");
+		File userJournalForSaving = new File(filePath);
+		if (!userJournalForSerialization.exists()) {
+			System.out.println("Journal for saving is not exist");
+			return;
+		}
+		if (!userJournalForSaving.exists()) {
+			System.out.println("Place for saving is not exist");
+			return;
+		}
+		Map<String, String[]> fileMapForSerialization = new HashMap<>();
+		File[] subDirs = userJournalForSerialization.listFiles();
+		if (subDirs != null) {
+			for (File subDir : subDirs) {
+				if (subDir.isDirectory()) {
+					String[] files = subDir.list((dir, name) -> new File(dir, name).isFile());
+					fileMapForSerialization.put(subDir.getPath(), files);
+				}
+			}
+		}
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(userJournalForSaving.getPath()))) {
+			out.writeObject(fileMapForSerialization);
+			System.out.println("Object was serialization on file " + userJournalForSaving.getPath());
 		} catch (IOException e) {
 			System.out.println("We have a problem with serialization: " + e.getMessage());
 			return;
@@ -185,96 +254,52 @@ public class JournalManagerClass {
 
 	}
 
-	//print info about saved journal with inserts and asks about recreate journals
-	public static void loadJournalFromBytes(String filePath, String journalName) {
-		String deserializedFile = "";
-		File userDirectory = new File(filePath);
-		File fileForDeserialization = new File(journalName);
-		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath+"/"+journalName+".ser"))) {
-			deserializedFile = (String) in.readObject();
-            System.out.println("Object was deserialized:/n" + deserializedFile+"/nRestore folder contents? Y/N");
-            try(Scanner sc = new Scanner(System.in)){
-            	if(sc.nextLine().trim().equalsIgnoreCase("y")) {
-            		journalFromString(deserializedFile);
-            		System.out.println("All done!");
-            	}else {
-            		System.out.println("Your data remains unchanged");
-            	}
-            }
-		} catch (IOException e) {
-			System.out.println("We have problem with deserialization: "+e.getMessage());
-		} catch (ClassNotFoundException e) {
-			System.out.println("We have problem with class-cast: "+e.getMessage());
-		}
-
+	public static String getPathOfDirectoryByName(String dirName) {
+		File userFile = new File(rootDirectory, dirName);
+		return userFile.getPath();
 	}
 
-	//put in String information about journal for saving 
-	private static String journalToString(File journal) {
-		String forPrint = "";
-		if (journal.exists()) {
-			File[] files = journal.listFiles();
-			forPrint = "Journal " + journal.getName();
-			if (files == null || files.length == 0) {
-				forPrint += "/nNothing inside of " + journal.getName();
-			}
-			forPrint += "/nInside the journal:/n";
-			for (int x = 0; x < files.length; x++) {
-				if (files[x].isFile()) {
-					forPrint += "File: " + files[x].getName() + "/n";
+	/*
+	 * (print info about saved journals with inserts and asks about recreate
+	 * journals)
+	 */
+	public static void loadJournalFromBytes(String journalName, String filePath) {
+		File deserializationUserFile = new File(filePath, journalName);
+		Map<String, String[]> fileMapDeserialization = new HashMap<>();
+		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(deserializationUserFile.getPath()))) {
+			fileMapDeserialization = (HashMap) in.readObject();
+			System.out.println("Object was deserialized. Restore folder contents? Y/N");
+			try (Scanner sc = new Scanner(System.in)) {
+				if (sc.nextLine().trim().equalsIgnoreCase("y")) {
+					journalsFromMap(fileMapDeserialization);
+					System.out.println("All done!");
 				} else {
-					forPrint += "Directory: " + files[x].getName() + "/n";
+					System.out.println("Your data remains unchanged");
 				}
 			}
+		} catch (IOException e) {
+			System.out.println("We have problem with deserialization: " + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			System.out.println("We have problem with class-cast: " + e.getMessage());
 		}
-		return forPrint;
+
 	}
-	
-	//proofs and recreate journals from info-file
-	private static void journalFromString(String journal) {
-		String[] files = journal.split("/n");
-		String[] journalNamePath = files[0].split(" ");
-		String userJournalName = journalNamePath[1];
-		File userJournal = new File(userJournalName);
-		createJournal(userJournalName);
-		if(files[1].trim().startsWith("Inside")) {
-			for(int x=2;x<files.length;x++) {
-				if(files[x].startsWith("Directory")) {
-					String insertNamePath[] = files[x].split(":");
-					File userInsertJournal = new File(userJournal,insertNamePath[1].trim());
-					createJournal(userInsertJournal.getPath());
+
+	/*
+	 * (proofs and recreate journals from info-file)
+	 * 
+	 */
+	private static void journalsFromMap(Map allJournals) {
+		Map<String, String[]> journals = new HashMap<>(allJournals);
+		for (Map.Entry<String, String[]> entry : journals.entrySet()) {
+			createJournal(entry.getKey());
+			for (String file : entry.getValue()) {
+				File proofFile = new File(file);
+				if (!proofFile.exists()) {
+					System.out.println("There is no file " + file + " in " + entry.getKey());
 				}
 			}
 		}
 		System.out.println("All directories on there places");
 	}
-	
-
-//	class Entry implements Serializable { //don't work with static class 
-//
-//		private String entryName;
-//		private String content;
-//
-//		public Entry(String entryName, String content) {
-//			this.entryName = entryName;
-//			this.content = content;
-//		}
-//
-//		public String getEntryName() {
-//			return entryName;
-//		}
-//
-//		public void setEntryName(String entryName) {
-//			this.entryName = entryName;
-//		}
-//
-//		public String getContent() {
-//			return content;
-//		}
-//
-//		public void setContent(String content) {
-//			this.content = content;
-//		}
-//
-//	}
 }
