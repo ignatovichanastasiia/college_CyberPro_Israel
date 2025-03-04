@@ -15,8 +15,10 @@ public class ReadingWriteAndWait {
 	private final static int THREADS_QUANTITY = 3;
 	private static int counter;
 	private static ReentrantLock lock;
+	private static ArrayList<String> listLines;
 
 	public static void threadsStarter() {
+		textPreparation();
 		counter = 0;
 		lock = new ReentrantLock();
 		for (int x = 0; x < THREADS_QUANTITY; x++) {
@@ -49,52 +51,32 @@ public class ReadingWriteAndWait {
 
 			switch (random) {
 			case 1:
-				System.out.println("It's random-num 1(write) for " + Thread.currentThread().getName());
 				lock.lock();
-				try (Writer writer = new FileWriter(FILE)) {
-					String next = getText(++counter);
-					System.out.println("Next line writing is: "+next+"\n");
-					writer.append(next);
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-					lock.unlock();
-				}
+				System.out.println("It's random-num 1(write) for " + Thread.currentThread().getName());
+				writerInFile();
 				lock.unlock();
 				break;
 			case 2:
 				System.out.println("It's random-num 2(read) for " + Thread.currentThread().getName());
-				lock.lock();
-				try (BufferedReader br = new BufferedReader(new FileReader(FILE))) {
-		            String line;
-		            while ((line = br.readLine()) != null) {
-		                System.out.println("\n"+line+"\n\n"); 
-		            }
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-					lock.unlock();
-				}
-				lock.unlock();
+				ReaderFromFile();
 				break;
 			case 3:
-				System.out.println("It's random-num 3(writer) for " + Thread.currentThread().getName());
 				lock.lock();
-				try (Writer writer = new FileWriter(FILE)) {
-					String next = getText(++counter);
-					System.out.println("Next line writing is: "+next+"\n");
-					writer.append(next);
-					lock.unlock();
-					System.out.println(Thread.currentThread().getName() + " waits");
-					Thread.sleep(1000);
+				System.out.println("It's random-num 3(writer) for " + Thread.currentThread().getName());
+				writerInFile();
+				System.out.println(Thread.currentThread().getName() + " waits");
+				lock.unlock();
+				try {
+					Thread.sleep(4000);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
-					lock.unlock();
 				}
 				break;
 			case 4:
 				System.out.println("It's random-num 4(check) for " + Thread.currentThread().getName());
-				if(lock.isLocked()) {
+				if (lock.isLocked()) {
 					System.out.println("Now The Lock is locked");
-				}else {
+				} else {
 					System.out.println("Now The Lock isn't locked");
 				}
 				break;
@@ -102,10 +84,38 @@ public class ReadingWriteAndWait {
 		}
 	}
 
-	public static String getText(int counter) {
-		ArrayList<String> listLines = new ArrayList();
+	public static void ReaderFromFile() {
+		try (BufferedReader br = new BufferedReader(new FileReader(FILE))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static void writerInFile() {
+		try (Writer writer = new FileWriter(FILE, true)) {
+			String next = getText();
+			System.out.println("Next line writing is: " + next);
+			writer.append(next);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static String getText() {
+		if (counter > listLines.size()) {
+			counter -= listLines.size();
+		}
+		return listLines.get(counter++);
+	}
+
+	public static void textPreparation() {
+		listLines = new ArrayList<String>();
 		String text = new String("""
-								As fast as thou shalt wane, so fast thou grow’st\n
+				As fast as thou shalt wane, so fast thou grow’st\n
 				In one of thine, from that which thou departest;\n
 				And that fresh blood which youngly thou bestow’st,\n
 				Thou mayst call thine when thou from youth convertest.\n
@@ -122,12 +132,12 @@ public class ReadingWriteAndWait {
 								""");
 		String[] textArray = text.split("\n");
 		listLines.addAll(Arrays.asList(textArray));
-		if (counter > listLines.size()) {
-			counter -= listLines.size();
-		}
-		return listLines.get(counter);
+		listLines.forEach(str -> {
+			str.trim();
+			str += ("\n");
+			System.out.print(str);
+		});
 	}
-
 }
 
 // We want to have 3 threads, that are working together, and randomazing a
