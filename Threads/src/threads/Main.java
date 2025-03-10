@@ -12,7 +12,13 @@ public class Main {
 //			thr.setPriority(y*2);
 //			thr.start();
 //		}
-		ReadingWriteAndWait.threadsStarter();
+//		ReadingWriteAndWait.threadsStarter();
+		try {
+			ThreadsService.justDoing();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

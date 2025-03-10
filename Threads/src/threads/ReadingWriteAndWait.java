@@ -7,19 +7,20 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ReadingWriteAndWait {
 	private final static File DIRECT = new File("threadsProj");
 	private final static File FILE = new File(DIRECT, "notebook.txt");
 	private final static int THREADS_QUANTITY = 3;
-	private static int counter;
+	private static AtomicInteger counter;
 	private static ReentrantLock lock;
 	private static ArrayList<String> listLines;
 
 	public static void threadsStarter() {
 		textPreparation();
-		counter = 0;
+		counter = new AtomicInteger(0);
 		lock = new ReentrantLock();
 		for (int x = 0; x < THREADS_QUANTITY; x++) {
 			Thread thr = new Thread(new Runnable() {
@@ -106,10 +107,12 @@ public class ReadingWriteAndWait {
 	}
 
 	public static String getText() {
-		if (counter > listLines.size()) {
-			counter -= listLines.size();
+		if (counter.get() >= listLines.size()) {
+			counter.set(counter.get()-listLines.size());
 		}
-		return listLines.get(counter++);
+		String line = listLines.get(counter.get());
+		counter.set(counter.get()+1);
+		return line;
 	}
 
 	public static void textPreparation() {
